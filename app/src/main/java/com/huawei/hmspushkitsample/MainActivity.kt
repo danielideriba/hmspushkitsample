@@ -40,9 +40,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getToken(context: Context) {
-        var pushToken = HmsInstanceId.getInstance(this@MainActivity).getToken("4332423", "HCM")
 
-        Log.i("TAG", "TOKEN: $pushToken")
+        object : Thread() {
+            override fun run() {
+                try {
+                    var pushToken = HmsInstanceId.getInstance(context).getToken("107432699", "HCM")
+                    Log.i("TAG", "TOKEN: $pushToken")
+                } catch (e: Exception) {
+                    Log.i(TAG, "deleteAAID failed! Catch exception : $e")
+                }
+            }
+        }.start()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,5 +73,12 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    companion object {
+        private const val APP_ID = "" //TODO add your appID here
+
+        private const val TAG: String = "MainActivity"
+        private const val CODELABS_ACTION: String = "com.huawei.codelabpush.action"
     }
 }
